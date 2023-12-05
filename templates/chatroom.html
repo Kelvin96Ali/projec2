@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block title %} chat area {% endblock %}
+{% block head_elements %}
+<script src="/static/chatroom.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style_chatroom.css') }}">
+{% endblock %}
+{% block body %}
+<div class="container-fluid">
+  <div class="row">
+    <header class="col-12 bg-light py-3">
+      <h1 class="mb-0 text-center">criptocomunication</h1>
+      <h4 class="mb-0 text-center">{{room.name}}</h4>
+      <h6 class="mb-0 text-center">connected as {{user}}</h6>
+    </header>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-2">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="btn btn-outline-secondary btn-block" href="{{url_for('chat_selection')}}">Return to room selection</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-outline-secondary btn-block" href="{{url_for('logout')}}">Logout</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-outline-info btn-block" href="{{url_for('get_messages', room_name = room.name)}}">Export messages</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-10" id="chat_area">
+      {% if room.messages %}
+        {% for message in room.messages %}
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">{{message.author}} says:</h5>
+              {{message.body}}
+            </div>
+            <p class="card-text"><small class="text-muted">from {{message.time_stamp}}</small></p>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+  <footer class="row bg-light py-3">
+    <nav class="col-12">
+      <form class="form-inline justify-content-center">
+        <button class="btn btn-outline-success mr-2" type="button" id="send_message">Send message</button>
+        <input class="form-control mr-sm-2" type="text" placeholder="Type here your message" aria-label="text" id="msg_box" style="width: 80%;">
+      </form>
+    </nav>
+  </footer>
+</div>
+{% endblock %}
